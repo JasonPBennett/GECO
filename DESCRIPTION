@@ -1,0 +1,26 @@
+Package: GECO
+Title: A metric to determine the biological quality of gene clusters
+Version: 0.1
+Authors@R: 
+    person(given = "Jason",
+           family = "Bennett",
+           role = c("aut", "cre"),
+           email = "jbennett@lji.org")
+Description: The GECO metric investigates co-expressed sets of genes and their
+    distribution within clusters to determine the biological quality of
+    clusters. Using our scoring methods, each gene is given a predictive value
+    between 0.0 and 1.0. These scores are then used to generate ROC curves, and
+    the resultant AUC values represent the quality of the clusters. This process
+    is performed iteratively over a given range of kmeans clusters and then
+    produces a plot to help the user determine an optimal number of clusters to
+    choose for their analysis based on the resultant quality of the clusters.
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.1
+Imports: 
+    ggplot2,
+    ROCR,
+    stats,
+    utils
