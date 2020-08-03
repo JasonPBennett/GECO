@@ -8,9 +8,9 @@ This is still a WIP and primarily intended for in-house testing at the moment.
 
 The GECO package contains three functions:
 
-1. make_clusters
-2. generate_scores
-3. assess_clusters
+1. *make_clusters()*
+2. *generate_scores()*
+3. *assess_clusters()*
 
 ## 1. make_clusters()
 This function accepts a data.frame as an arguement. This dataframe should contain your counts table with genes in rows and samples in columns. The reads should already be normalized and ready for clustering. In the case of our data, this meant:
