@@ -8,9 +8,9 @@ This is still a WIP and primarily intended for in-house testing at the moment.
 
 The GECO package contains three functions:
 
-- make_clusters
-- generate_scores
-- assess_clusters
+1. make_clusters
+2. generate_scores
+3. assess_clusters
 
 ## 1. make_clusters()
 This function accepts a data.frame as an arguement. This dataframe should contain your counts table with genes in rows and samples in columns. The reads should already be normalized and ready for clustering. In the case of our data, this meant:
@@ -24,13 +24,13 @@ This function also has a number of optional parameters that can be reviewed thro
 
 The output will be a set of nested lists, containing each iteration of the clustering performed, and within that will be the kmeans objects generated for each k value selected. The number of iterations, range of k-values, and total number of different k-values to try are all optional parameters as detailed in the man page for the function.
 
-NOTE: This step is the longest in the process and with default parameters may take about an hour. This time is variable depending on the size of the data as well as well as additional optional parameters selected. Details can be found in the man page. I highly suggest saving the output from this function to allow rapid re-running of subsequent functions.
+**NOTE: This step is the longest in the process and with default parameters may take about an hour. This time is variable depending on the size of the data as well as well as additional optional parameters selected. Details can be found in the man page. I highly suggest saving the output from this function to allow rapid re-running of subsequent functions.**
 
 ## 2. generate_scores()
 
 This function takes the clusters that were just generated as output from make_clusters() in the form of a list as well as the full path to a directory containing your ground truth genes. The files contained within this directory should be csv files formatted with only the name of the ground truth set on the first line and the gene ids (listed one per line).
 
-NOTE: The naming convention of the genes in the original counts table MUST match the gene ids provided in the ground truth gene csv files.
+**NOTE: The naming convention of the genes in the original counts table MUST match the gene ids provided in the ground truth gene csv files.**
 
 The output is a list containing the scores to be used in the final step of assessing the clusters.
 
@@ -54,21 +54,17 @@ The take-away is the mean value within the boxes. A trend should be observed, in
 
 # Quick Example
 
-// Normalized, feature scaled data
-
+*// Normalized, feature scaled data*
 df
 
-// Create the clusters from the data
-
+*// Create the clusters from the data*
 clusters <- GECO::make_clusters(df)
 
-// Find the GECO scores using the clusters and co-expressed ground truth gene sets
-
+*// Find the GECO scores using the clusters and co-expressed ground truth gene sets*
 dir <- "./R/gt_sets/"
 GECO_scores <- GECO::generate_scores(clusters, dir)
 
-// Determine biological significance of clusters from the observed cluster quality
-
+*// Determine biological significance of clusters from the observed cluster quality*
 fig <- GECO::assess_clusters(GECO_scores)
 plot(fig)
 
