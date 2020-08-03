@@ -55,16 +55,20 @@ The take-away is the mean value within the boxes. A trend should be observed, in
 # Quick Example
 
 *// Normalized, feature scaled data*
+
 df
 
 *// Create the clusters from the data*
+
 clusters <- GECO::make_clusters(df)
 
 *// Find the GECO scores using the clusters and co-expressed ground truth gene sets*
+
 dir <- "./R/gt_sets/"
 GECO_scores <- GECO::generate_scores(clusters, dir)
 
 *// Determine biological significance of clusters from the observed cluster quality*
+
 fig <- GECO::assess_clusters(GECO_scores)
 plot(fig)
 
