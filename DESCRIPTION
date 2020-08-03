@@ -24,3 +24,5 @@ Imports:
     ROCR,
     stats,
     utils
+URL: https://github.com/JasonPBennett/GECO
+BugReports: https://github.com/JasonPBennett/GECO/issues
