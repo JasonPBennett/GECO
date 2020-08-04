@@ -61,7 +61,7 @@ df
 clusters <- GECO::make_clusters(df)
 
 *// Find the GECO scores using the clusters and co-expressed ground truth gene sets*<br/>
-dir <- "./R/gt_sets/"
+dir <- "./R/gt_sets/"<br/>
 GECO_scores <- GECO::generate_scores(clusters, dir)
 
 *// Determine biological significance of clusters from the observed cluster quality*<br/>
