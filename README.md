@@ -25,7 +25,28 @@ This function accepts a dataframe as an arguement. This dataframe should contain
 
 This function also has a number of optional parameters that can be reviewed through the man page accessed in the usual way: ?generate_clusters
 
-The output will be a set of nested lists, containing each iteration of the clustering performed, and within that will be the kmeans objects generated for each k value selected. The number of iterations, range of k-values, and total number of different k-values to try are all optional parameters as detailed in the man page for the function.
+The clustering process will be performed iteratively, due to the stochasticity of start conditions used by the k-means algorithm. Multiple iterations allow the package to control for aberrant start conditions. The output will be a set of nested lists, containing each iteration of the clustering performed, and within that will be the kmeans objects generated for each k value selected. The number of iterations, range of k-values, and total number of different k-values to try are all optional parameters as detailed in the man page for the function.
+
+```
+A visual example of the output follows, assuming default parameters were used:
+- 'clusters' is a list which is the output of the generate_clusters() function
+- within 'clusters' will be another list numbered 1 - 10: these refer to the iterations
+-- the visual example assumes iteration '1' is being investigated
+- within each 'iteration' is another list containing all kmeans clusters, with one entry per k-value
+-- the visual example assumes that we are looking at iteration '1' and the kmeans object generated with k = 10
+
+clusters__________________________________________________________________________
+|  
+|  [1] iterations_________________________________________________________________
+|      |
+|      |['10']kmeans_objects______________________________________________________
+|      |      |
+|      |      |  kmeans(data, k=10, ...)
+|      |      |
+
+Ultimately, the visual example shows the kmeans object from the first iteration when clustering with a k-value of 10.
+
+```
 
 **NOTE: This step is the longest in the process and with default parameters may take about an hour. This time is variable depending on the size of the data as well as well as additional optional parameters selected. Details can be found in the man page. I highly suggest saving the output from this function to allow rapid re-running of subsequent functions.**
 
@@ -35,7 +56,30 @@ This function takes the clusters that were just generated as output from *genera
 
 **NOTE: The naming convention of the genes in the original counts table MUST match the gene ids provided in the ground truth gene csv files. In the case of ENSEMBL ids, make sure the versions match also (the decimal portion of the id), and as a last resort strip version numbers to still allow matching.**
 
-The output is a list containing the scores to be used in the final step of assessing the clusters.
+```
+The output is a list containing the scores to be used in the final step of assessing the clusters. Again, a visual representation of the output object is provided:
+- 'scores' is a list which is the output of the score_clusters() function
+- within 'scores' is another list, each nested list is labeled with the name of the ground truth gene set provided in the first line of the .csv files required by the score_clusters() function
+-- the visual example assumes that a ground truth set called 'x' was selected (a terrible label!)
+- within 'x' will be another list numbered 1 - 10: these refer to the iterations
+-- the visual example assumes iteration '1' is being investigated
+- within each 'iteration' is another list containing all kmeans scores, broken down by k-value
+-- the visual example assumes a k-value of '10' is being investigated
+
+scores________________________________________________________________________________
+|  
+|  [x] Ground_Truth_Sets______________________________________________________________
+|      |
+|      | [1]  iterations______________________________________________________________
+|      |      |
+|      |      |['10']k_value__________________________________________________________
+|      |      |      |
+|      |      |      |  scores table for all genes in this clustering configuration
+|      |      |      |
+
+Ultimate, the example shows the scores from the 'x' ground truth gene set within the first iteration given a k-value of 10.
+
+```
 
 ## 3. assess_quality()
 
