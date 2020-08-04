@@ -3,40 +3,43 @@ GECO: A metric to assess the biological significance of gene clusters
 
 This is still a WIP and primarily intended for in-house testing at the moment.
 
+The goal of this tool is generate sets of gene clusters that can be evauluated using the GECO metric to determine the highest quality clusters. The level of quality is determined by the distribution of known co-expressed gene sets, with the assumption that genes that are co-expressed should be clustered together if our clustering parameters were correct. The GECO package takes a dataset in the form of a normalized counts table and generates a series of clusters. These clusters are created using the k-means algorithm with wide-ranging k-values (or numbers of clusters). Each permutation is then scored using the GECO metric and ultimately given cluster quality scores with the goal of identifying a certain k-value, or a certain optimal number of clusters, that best captures the delicate biological signals found within the dataset. Following the use of the package, an optimal set of clusters can be generated based on the optimal k-value indicated by the package.
+
 
 # Getting Started
 
 The GECO package contains three functions:
 
-1. *make_clusters()*
-2. *generate_scores()*
-3. *assess_clusters()*
+1. *generate_clusters()*
+2. *score_clusters()*
+3. *assess_quality()*
 
-## 1. make_clusters()
-This function accepts a data.frame as an arguement. This dataframe should contain your counts table with genes in rows and samples in columns. The reads should already be normalized and ready for clustering. In the case of our data, this meant:
+## 1. generate_clusters()
+This function accepts a dataframe as an arguement. This dataframe should contain your counts table with genes in rows and samples in columns. The counts within the dataframe should already be normalized and ready for clustering. In the case of our data, this meant:
 
 - removing genes with 0 reads across all samples
 - TPM normalization of the reads
 - filtering out genes with less than 1 TPM expression
+- filtering out non-protein coding genes
 - performing Z-score normalization on the reads (or any other method of feature scaling)
 
-This function also has a number of optional parameters that can be reviewed through the man page accessed in the usual way: ?make_clusters
+This function also has a number of optional parameters that can be reviewed through the man page accessed in the usual way: ?generate_clusters
 
 The output will be a set of nested lists, containing each iteration of the clustering performed, and within that will be the kmeans objects generated for each k value selected. The number of iterations, range of k-values, and total number of different k-values to try are all optional parameters as detailed in the man page for the function.
 
 **NOTE: This step is the longest in the process and with default parameters may take about an hour. This time is variable depending on the size of the data as well as well as additional optional parameters selected. Details can be found in the man page. I highly suggest saving the output from this function to allow rapid re-running of subsequent functions.**
 
-## 2. generate_scores()
+## 2. score_clusters()
 
-This function takes the clusters that were just generated as output from make_clusters() in the form of a list as well as the full path to a directory containing your ground truth genes. The files contained within this directory should be csv files formatted with only the name of the ground truth set on the first line and the gene ids (listed one per line).
+This function takes the clusters that were just generated as output from *generate_clusters()* in the form of a list as well as the full path to a directory containing your ground truth genes. The files contained within this directory should be csv files formatted with only the name of the ground truth set on the first line and the gene ids (listed one per line).
 
-**NOTE: The naming convention of the genes in the original counts table MUST match the gene ids provided in the ground truth gene csv files.**
+**NOTE: The naming convention of the genes in the original counts table MUST match the gene ids provided in the ground truth gene csv files. In the case of ENSEMBL ids, make sure the versions match also (the decimal portion of the id), and as a last resort strip version numbers to still allow matching.**
 
 The output is a list containing the scores to be used in the final step of assessing the clusters.
 
-## 3. assess_clusters()
+## 3. assess_quality()
 
-This function takes the GECO scores calculated within generate_scores() and performs an ROC/AUC analysis to identify cluster quality.
+This function takes the GECO scores calculated within *score_clusters()* and performs an ROC/AUC analysis to identify cluster quality.
 
 The output will be a ggplot2 figure that can be examined by running the base plot() function on the returned ggplot2 object.
 
@@ -47,9 +50,11 @@ The output figure will be a graph containing:
 
 - the k-value (number of clusters) on the x-axis
 - the cluster quality on the y-axis (0.5 is random distribution of ground truth genes across the clusters, 1.0 is perfect clustering which means each ground truth gene set was placed into its own cluster with nothing but other members of the same ground truth gene set contained within)
-- boxes representing the cluster quality scores for the 'n' iterations of clustering (e.g. default is 10 iterations, so the box contains the 10 quality scores for each k value). The horizontal line within the boxes indicated the mean quality for that value of k.
+- boxes representing the cluster quality scores for the 'n' iterations of clustering (e.g. default is 10 iterations, so the box contains the 10 quality scores for each k value). The horizontal line within the boxes indicates the mean quality for that value of k.
 
 The take-away is the mean value within the boxes. A trend should be observed, increasing from lower k-values (10, 12, etc.) and increasing to a plateau. The selection of which k-value starts this plateau is heuristic, but the k-value at the beginning of the plateau would represent an optimal number of clusters for your dataset. With this information, you can generate clusters from your dataset using the given k-value and be confident that the clustering has captured biologically significant groups of genes.
+
+**NOTE: If a plateau in scores is not observed, consider increasing the 'kmax' parameter and re-running the *generate_clusters()* function with this larger 'kmax' value.**
 
 
 # Quick Example
@@ -58,14 +63,14 @@ The take-away is the mean value within the boxes. A trend should be observed, in
 df
 
 *// Create the clusters from the data*<br/>
-clusters <- GECO::make_clusters(df)
+clusters <- GECO::generate_clusters(df)
 
 *// Find the GECO scores using the clusters and co-expressed ground truth gene sets*<br/>
 dir <- "./R/gt_sets/"<br/>
-GECO_scores <- GECO::generate_scores(clusters, dir)
+GECO_scores <- GECO::score_clusters(clusters, dir)
 
 *// Determine biological significance of clusters from the observed cluster quality*<br/>
-fig <- GECO::assess_clusters(GECO_scores)<br/>
+fig <- GECO::assess_quality(GECO_scores)<br/>
 plot(fig)
 
 
