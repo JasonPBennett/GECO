@@ -65,7 +65,7 @@ dir <- "./R/gt_sets/"<br/>
 GECO_scores <- GECO::generate_scores(clusters, dir)
 
 *// Determine biological significance of clusters from the observed cluster quality*<br/>
-fig <- GECO::assess_clusters(GECO_scores)
+fig <- GECO::assess_clusters(GECO_scores)<br/>
 plot(fig)
 
 
