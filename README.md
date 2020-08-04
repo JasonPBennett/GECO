@@ -66,16 +66,16 @@ The output is a list containing the scores to be used in the final step of asses
 - within each 'iteration' is another list containing all kmeans scores, broken down by k-value
 -- the visual example assumes a k-value of '10' is being investigated
 
-scores________________________________________________________________________________
+scores_________________________________________________________________________________
 |  
-|  [x] Ground_Truth_Sets______________________________________________________________
-|      |
-|      | [1]  iterations______________________________________________________________
-|      |      |
-|      |      |['10']k_value__________________________________________________________
-|      |      |      |
-|      |      |      |  scores table for all genes in this clustering configuration
-|      |      |      |
+| ['x'] Ground_Truth_Sets______________________________________________________________
+|       |
+|       | [1]  iterations______________________________________________________________
+|       |      |
+|       |      |['10']k_value__________________________________________________________
+|       |      |      |
+|       |      |      |  scores table for all genes in this clustering configuration
+|       |      |      |
 
 Ultimate, the example shows the scores from the 'x' ground truth gene set within the first iteration given a k-value of 10.
 
