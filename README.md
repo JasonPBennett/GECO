@@ -15,7 +15,7 @@ The GECO package contains three functions:
 3. *assess_quality()*
 
 ## 1. generate_clusters()
-This function accepts a dataframe as an arguement. This dataframe should contain your counts table with genes in rows and samples in columns. The counts within the dataframe should already be normalized and ready for clustering. In the case of our data, this meant:
+This function accepts a dataframe as an argument. This dataframe should contain your counts table with genes in rows and samples in columns. The counts within the dataframe should already be normalized and ready for clustering. In the case of our data, this meant:
 
 - removing genes with 0 reads across all samples
 - TPM normalization of the reads
