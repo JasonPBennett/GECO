@@ -85,7 +85,7 @@ Ultimate, the example shows the scores from the 'x' ground truth gene set within
 
 This function takes the GECO scores calculated within *score_clusters()* and performs an ROC/AUC analysis to identify cluster quality.
 
-The output will be a ggplot2 figure that can be examined by running the base plot() function on the returned ggplot2 object.
+The output will be a ggplot2 object that can be visualized by running the base plot() function on the returned ggplot2 object.
 
 
 # Interpreting the Output
