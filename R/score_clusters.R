@@ -9,7 +9,7 @@ get_GT_genes <- function(GT_dir) {
   # Append the GT sets to our GT list
   lbls <- c()
   for(file in fnames) {
-    tmp <- utils::read.table(file, sep = ",", header = TRUE, stringsAsFactors = FALSE)
+    tmp <- utils::read.table(file, sep = ",", header = FALSE, stringsAsFactors = FALSE)
     lbls <- c(lbls, tmp[1,])
     gt_sets <- append(gt_sets, as.data.frame(tmp[-1,], stringsAsFactors = FALSE))
   }
@@ -32,6 +32,14 @@ get_GT_genes <- function(GT_dir) {
 score_clusters <- function(km_clusters, GT_dir) {
   # Get the ground truth sets
   gt_sets <- get_GT_genes(GT_dir)
+
+  # Ensure that the ground truth genes can be found within the dataset
+  all_genes <- names(km_test[[1]][[1]]$cluster)
+  for(i in 1:length(gt_sets)) {
+    if(sum(gt_sets[[i]] %in% all_genes) <= 0) {
+      stop(paste0("No genes from the ground truth set '", names(gt_sets[i]), "' can be found in the data!"))
+    }
+  }
 
   # Create the scores list
   scores <- list()

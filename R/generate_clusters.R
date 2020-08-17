@@ -51,11 +51,12 @@ generate_clusters <- function(df, kmin, kmax, ktot, num_iter, km_algo) {
       # Run k-means for each k value
       clust <- stats::kmeans(df, k, iter.max = 30, algorithm = km_algo)
 
-      # Make sure that the algorithm converges (only an issue in extreme cases)
+      # Make sure that the algorithm reached convergence
       if(!is.null(clust$ifault)) {
         # If it didn't converge, redo the clustering
         while(clust$ifault != 0) {
-          clust <- stats::kmeans(df, k, iter.max = 50, algorithm = km_algo)
+          message("Initial k-means clustering could not converge. Attempting to reach convergence by increasing convergence threshold parameter (iter.max = 100).")
+          clust <- stats::kmeans(df, k, iter.max = 100, algorithm = km_algo)
         }
       }
 
@@ -68,6 +69,8 @@ generate_clusters <- function(df, kmin, kmax, ktot, num_iter, km_algo) {
     # Store the kmeans iterations
     km_clusters[[i]] <- k_clusts
   }
+  itr_lbls <- paste0("Iteration " ,c(1:num_iter), sep = "")
+  names(km_clusters) <- itr_lbls
 
   return(km_clusters)
 }

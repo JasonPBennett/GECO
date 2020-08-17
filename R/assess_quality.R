@@ -69,10 +69,6 @@ assess_quality <- function(GECO_scores) {
   # Local definition
   k <- AUC_Value <- Target_Property <- NULL
 
-  # Get the vector of k-values
-  #k_vec <- names(scores[[1]][[1]])
-  #k_vec <- as.factor(as.numeric(k_vec))
-
   gridlines <- c(rep(0,length(k_vec)))
   for(i in 1:(length(k_vec)-1)) {
     x_1 <- k_vec[i]
@@ -80,34 +76,36 @@ assess_quality <- function(GECO_scores) {
     gridlines[i+1] <- mean(c(x_1, x_2))
   }
 
-  ggplot_fig <- ggplot(AUC_tbl, aes(x = k, y = AUC_Value)) +
-    stat_summary(aes(color = Target_Property), fun.data = minmax,
-                 position=position_dodge(1.00), geom = "boxplot") +
-    stat_summary(aes(color = Target_Property, xmin = ), fun = outlier,
-                 position=position_dodge(1.00), geom = 'point',
+  ggplot_fig <- ggplot2::ggplot(AUC_tbl, ggplot2::aes(x = k, y = AUC_Value)) +
+    ggplot2::stat_summary(ggplot2::aes(color = Target_Property), width = 0.8, fun.data = minmax,
+                 position=ggplot2::position_dodge(0.8), geom = "boxplot") +
+    ggplot2::stat_summary(ggplot2::aes(color = Target_Property, xmin = ), fun = outlier,
+                 position=ggplot2::position_dodge(0.8), geom = 'point',
                  shape = 95, size = 3.5) +
-    stat_boxplot(aes(color = Target_Property),
-                 position=position_dodge(1.00), geom = 'errorbar', coef = 10000) +
-    ylim(0,1) +
-    ylab("Cluster Quality Scores [AUC]") +
-    xlab("Number of Clusters") +
-    labs(color = "Ground Truth Genes") +
-    theme_bw() +
-    ggtitle("GECO Cluster Quality Assessment") +
-    geom_vline(xintercept=seq(from = 1.5, to = length(unique(k_vec))-0.5, by = 1),
-               lwd=0.3, alpha = 0.5, colour="darkgrey") +
-    theme(panel.grid.major.x = element_blank(),
-          plot.title = element_text(size = rel(2.0), hjust = 0.5),
+    ggplot2::stat_boxplot(ggplot2::aes(color = Target_Property), width = 0.8,
+                 position=ggplot2::position_dodge(0.8), geom = 'errorbar', coef = 10000) +
+    ggplot2::ylim(0,1) +
+    ggplot2::ylab("Cluster Quality Scores [AUC]") +
+    ggplot2::xlab("Number of Clusters") +
+    ggplot2::labs(color = "Ground Truth Genes") +
+    ggplot2::theme_bw() +
+    ggplot2::ggtitle("GECO Cluster Quality Assessment") +
+    ggplot2::geom_vline(xintercept=seq(from = 1.5, to = length(unique(k_vec))-0.5, by = 1),
+               lwd=0.3, alpha = 0.8, colour="darkgrey") +
+    ggplot2::theme(panel.border = ggplot2::element_rect(fill=NA, size = 1.5),
+          panel.grid.major.x = ggplot2::element_blank(),
+          panel.grid.major.y = ggplot2::element_line(colour = "darkgrey"),
+          plot.title = ggplot2::element_text(size = ggplot2::rel(2.0), hjust = 0.5),
           legend.position = c(0.85,0.25),
-          legend.background = element_rect(fill="white",
+          legend.background = ggplot2::element_rect(fill="white",
                                            size=0.5, linetype="solid",
                                            colour ="black"),
-          legend.title = element_text(size = rel(1.5)),
-          legend.text = element_text(size = rel(1.25)),
-          axis.text.x = element_text(angle = 90, hjust = 1, size = rel(1.5)),
-          axis.title.x = element_text(size = rel(2.0)),
-          axis.text.y = element_text(size = rel(2.0)),
-          axis.title.y = element_text(size = rel(2.0)))
+          legend.title = ggplot2::element_text(size = ggplot2::rel(1.5)),
+          legend.text = ggplot2::element_text(size = ggplot2::rel(1.25)),
+          axis.text.x = ggplot2::element_text(angle = 90, hjust = 1, size = ggplot2::rel(1.5)),
+          axis.title.x = ggplot2::element_text(size = ggplot2::rel(2.0)),
+          axis.text.y = ggplot2::element_text(size = ggplot2::rel(2.0)),
+          axis.title.y = ggplot2::element_text(size = ggplot2::rel(2.0)))
 
   return(ggplot_fig)
 }
