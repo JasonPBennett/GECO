@@ -1,6 +1,6 @@
 Package: GECO
 Title: A metric to determine the biological quality of gene clusters
-Version: 0.2
+Version: 0.3
 Authors@R: 
     person(given = "Jason",
            family = "Bennett",
@@ -26,3 +26,7 @@ Imports:
     utils
 URL: https://github.com/JasonPBennett/GECO
 BugReports: https://github.com/JasonPBennett/GECO/issues
+Suggests: 
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr

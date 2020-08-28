@@ -69,8 +69,7 @@ generate_clusters <- function(df, kmin, kmax, ktot, num_iter, km_algo) {
     # Store the kmeans iterations
     km_clusters[[i]] <- k_clusts
   }
-  itr_lbls <- paste0("Iteration " ,c(1:num_iter), sep = "")
-  names(km_clusters) <- itr_lbls
+  names(km_clusters) <- paste0("Iteration ", c(1:num_iter), sep = "")
 
   return(km_clusters)
 }

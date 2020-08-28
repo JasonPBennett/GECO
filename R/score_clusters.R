@@ -49,9 +49,11 @@ score_clusters <- function(km_clusters, GT_dir) {
     gt_cnt <- gt_cnt + 1
     # Store the scoring tables
     gt_ROC_list <- vector(mode = "list", length(km_clusters))
+    # Find number of iterations
+    num_iter <- length(km_clusters)
 
     # Work through the iterations: 1 - num_iter
-    for(itr in 1:length(km_clusters)) {
+    for(itr in 1:num_iter) {
       clust_itr <- km_clusters[[itr]]
       k_vec <- names(clust_itr)
 
@@ -92,6 +94,7 @@ score_clusters <- function(km_clusters, GT_dir) {
       names(gt_ROC) <- k_vec
       gt_ROC_list[[itr]] <- gt_ROC
     }
+    names(gt_ROC_list) <- paste0("Iteration ", c(1:num_iter), sep = "")
     scores[[gt_cnt]] <- gt_ROC_list
   }
   names(scores) <- names(gt_sets)
