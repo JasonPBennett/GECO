@@ -30,19 +30,19 @@ The clustering process will be performed iteratively, due to the stochasticity o
 ```
 A visual example of the output follows, assuming default parameters were used:
 - 'clusters' is a list which is the output of the generate_clusters() function
-- within 'clusters' will be another list numbered 1 - 10: these refer to the iterations
--- the visual example assumes iteration '1' is being investigated
+- within 'clusters' will be another list labeled "Iteration 1 - 10": these refer to the iterations
+-- the visual example assumes the first iteration is being investigated
 - within each 'iteration' is another list containing all kmeans clusters, with one entry per k-value
 -- the visual example assumes that we are looking at iteration '1' and the kmeans object generated with k = 10
 
 clusters__________________________________________________________________________
 |  
-|  [1] iterations_________________________________________________________________
-|      |
-|      |['10']kmeans_objects______________________________________________________
-|      |      |
-|      |      |  kmeans(data, k=10, ...)
-|      |      |
+| ['Iteration 1'] iterations______________________________________________________
+|                 |
+|                 | ['10'] kmeans_objects_________________________________________
+|                 |        |
+|                 |        |  kmeans(data, k=10, ...)
+|                 |        |
 
 Ultimately, the visual example shows the kmeans object from the first iteration when clustering with a k-value of 10.
 
@@ -61,21 +61,21 @@ The output is a list containing the scores to be used in the final step of asses
 - 'scores' is a list which is the output of the score_clusters() function
 - within 'scores' is another list, each nested list is labeled with the name of the ground truth gene set provided in the first line of the .csv files required by the score_clusters() function
 -- the visual example assumes that a ground truth set called 'x' was selected (a terrible label!)
-- within 'x' will be another list numbered 1 - 10: these refer to the iterations
--- the visual example assumes iteration '1' is being investigated
+- within 'x' will be another list labeled "Iteration 1 - 10": these refer to the iterations
+-- the visual example assumes the first iteration is being investigated
 - within each 'iteration' is another list containing all kmeans scores, broken down by k-value
 -- the visual example assumes a k-value of '10' is being investigated
 
-scores_________________________________________________________________________________
+scores_____________________________________________________________________________________________
 |  
-| ['x'] Ground_Truth_Sets______________________________________________________________
+| ['x'] Ground_Truth_Sets__________________________________________________________________________
 |       |
-|       | [1]  iterations______________________________________________________________
-|       |      |
-|       |      |['10']k_value__________________________________________________________
-|       |      |      |
-|       |      |      |  scores table for all genes in this clustering configuration
-|       |      |      |
+|       | ['Iteration 1'] iterations_______________________________________________________________
+|       |                 |
+|       |                 | ['10'] k_value_________________________________________________________
+|       |                 |        |
+|       |                 |        |  scores table for all genes in this clustering configuration
+|       |                 |        |
 
 Ultimate, the example shows the scores from the 'x' ground truth gene set within the first iteration given a k-value of 10.
 
