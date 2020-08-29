@@ -34,7 +34,7 @@ score_clusters <- function(km_clusters, GT_dir) {
   gt_sets <- get_GT_genes(GT_dir)
 
   # Ensure that the ground truth genes can be found within the dataset
-  all_genes <- names(km_test[[1]][[1]]$cluster)
+  all_genes <- names(km_clusters[[1]][[1]]$cluster)
   for(i in 1:length(gt_sets)) {
     if(sum(gt_sets[[i]] %in% all_genes) <= 0) {
       stop(paste0("No genes from the ground truth set '", names(gt_sets[i]), "' can be found in the data!"))
