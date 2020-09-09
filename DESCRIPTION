@@ -14,7 +14,7 @@ Description: The GECO metric investigates co-expressed sets of genes and their
     is performed iteratively over a given range of kmeans clusters and then
     produces a plot to help the user determine an optimal number of clusters to
     choose for their analysis based on the resultant quality of the clusters.
-License: MIT + file LICENSE
+License: GPL-3
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
