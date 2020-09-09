@@ -60,7 +60,7 @@ minmax <- function(x) {
 #' @param GECO_scores The scores dataframe output by score_clusters.
 #' @return A ggplot2 object ready for plotting e.g. plot(returned_object)
 #' @export
-#' @importFrom ggplot2 ggplot aes stat_summary position_dodge stat_boxplot ylim ylab xlab labs theme_bw ggtitle geom_vline theme element_blank element_text rel element_rect
+#' @importFrom ggplot2 ggplot aes stat_summary position_dodge stat_boxplot ylim ylab xlab labs theme_bw ggtitle geom_vline theme element_blank element_text rel element_line element_rect
 assess_quality <- function(GECO_scores) {
   AUC_list <- find_AUC(GECO_scores)
   AUC_tbl <- AUC_list[[1]]
