@@ -1,8 +1,11 @@
 ---
-title: "GECO_Vignette"
-output: rmarkdown::html_vignette
+title: "GECO"
+author: "Jason Bennett"
+date: "`r Sys.Date()`"
+output:
+  rmarkdown::pdf_document
 vignette: >
-  %\VignetteIndexEntry{GECO_Vignette}
+  %\VignetteIndexEntry{GECO}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -14,6 +17,6 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r setup}
-library(GECO)
-```
+## GECO: A metric to determine biological informational content within gene clusters
+
+Vignette text here, followed by code examples.

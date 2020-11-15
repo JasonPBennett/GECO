@@ -5,7 +5,8 @@ Authors@R:
     person(given = "Jason",
            family = "Bennett",
            role = c("aut", "cre"),
-           email = "jbennett@lji.org")
+           email = "thisisjasonbennett@gmail.com")
+Maintainer: Jason Bennett <thisisjasonbennett@gmail.com>
 Description: The GECO metric investigates co-expressed sets of genes and their
     distribution within clusters to determine the biological quality of
     clusters. Using our scoring methods, each gene is given a predictive value
@@ -26,10 +27,10 @@ Imports:
     utils
 URL: https://github.com/JasonPBennett/GECO
 BugReports: https://github.com/JasonPBennett/GECO/issues
-Suggests: 
+VignetteBuilder: knitr
+Suggests:
     knitr,
     rmarkdown
-VignetteBuilder: knitr
 biocViews:
     Software,
     Workflow
