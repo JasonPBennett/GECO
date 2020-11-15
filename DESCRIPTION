@@ -6,7 +6,6 @@ Authors@R:
            family = "Bennett",
            role = c("aut", "cre"),
            email = "thisisjasonbennett@gmail.com")
-Maintainer: Jason Bennett <thisisjasonbennett@gmail.com>
 Description: The GECO metric investigates co-expressed sets of genes and their
     distribution within clusters to determine the biological quality of
     clusters. Using our scoring methods, each gene is given a predictive value
@@ -32,5 +31,6 @@ Suggests:
     knitr,
     rmarkdown
 biocViews:
-    Software,
-    Workflow
+    Clustering,
+    DimensionReduction,
+    RNASeq
