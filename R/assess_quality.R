@@ -59,6 +59,16 @@ minmax <- function(x) {
 #'
 #' @param GECO_scores The scores dataframe output by score_clusters.
 #' @return A ggplot2 object ready for plotting e.g. plot(returned_object)
+#' @examples
+#' # Create pseudo scores tables: >1 required
+#' df10 <- data.frame(clust_num = sample(1:10, 200, replace = TRUE), gene_name = sample(paste0(rep("Gene.", 200), seq(1:200)), 200, replace = FALSE), pos_vec = sample(c(rep("FALSE",197), rep("TRUE",3)), 200, replace = FALSE), prob_vec = sample(runif(10), 200, replace = TRUE))
+#' df12 <- data.frame(clust_num = sample(1:10, 200, replace = TRUE), gene_name = sample(paste0(rep("Gene.", 200), seq(1:200)), 200, replace = FALSE), pos_vec = sample(c(rep("FALSE",197), rep("TRUE",3)), 200, replace = FALSE), prob_vec = sample(runif(10), 200, replace = TRUE))
+#' # Create the scores structure and insert our tables
+#' scores <- list()
+#' scores$`Ground Truth Set X`$`Iteration 1`$`10` <- df10
+#' scores$`Ground Truth Set X`$`Iteration 1`$`12` <- df12
+#' fig <- assess_quality(scores)
+#' plot(fig)
 #' @export
 #' @importFrom ggplot2 ggplot aes stat_summary position_dodge stat_boxplot ylim ylab xlab labs theme_bw ggtitle geom_vline theme element_blank element_text rel element_line element_rect
 assess_quality <- function(GECO_scores) {
@@ -85,7 +95,7 @@ assess_quality <- function(GECO_scores) {
     stat_boxplot(aes(color = Target_Property), width = 0.8,
                  position=position_dodge(0.8), geom = 'errorbar', coef = 10000) +
     ylim(0,1) +
-    ylab("Cluster Quality Scores [AUC]") +
+    ylab("GECO Metric") +
     xlab("Number of Clusters") +
     labs(color = "Ground Truth Genes") +
     theme_bw() +

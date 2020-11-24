@@ -20,3 +20,16 @@ computes the GECO scores for each gene within each cluster. This scores table
 is meant to be used with the final function in the GECO process:
 assess_quality.
 }
+\examples{
+clusters <- list()
+# This replicates the structure of the clusters returned by 'generate_clusters'
+df <- data.frame(replicate(10,sample(-1:10,200,rep=TRUE)))
+rownames(df) <- paste0(rep("Gene.", 200), seq(1:200))
+clusters$`Iteration 1`$`10` <- kmeans
+# This replicates a ground truth set and stores it in a directory
+gt_set <- c("Ground Truth Set X", "Gene.1", "Gene.10", "Gene.50")
+dir.create("./GECOdata")
+write.table(gt_set, file = "./GECOData/gs_genes.csv", row.names = FALSE, col.names = FALSE)
+# Score the clusters using the ground truth sets found in /GECOdata
+scores <- score_clusters(clusters, "./GECOdata")
+}

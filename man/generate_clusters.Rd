@@ -40,3 +40,10 @@ This function takes the normalized data (TPM/FPKM & feature scaled) and uses
 the k-means function to generate an iterative series of clusters to identify
 a potentially optimal number of clusters for the dataset.
 }
+\examples{
+# Create a pseudo RNA-seq counts table
+df <- data.frame(replicate(10,sample(-1:10,200,rep=TRUE)))
+rownames(df) <- paste0(rep("Gene.", 200), seq(1:200))
+# Generate clusters
+clusters <- generate_clusters(df)
+}

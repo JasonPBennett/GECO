@@ -24,6 +24,12 @@
 #' @return A list containing each iteration of the clustering performed. Within
 #' each of the iterations are the kmeans objects for use in the second step e.g.
 #' score_clusters(clusters).
+#' @examples
+#' # Create a pseudo RNA-seq counts table
+#' df <- data.frame(replicate(10,sample(-1:10,200,rep=TRUE)))
+#' rownames(df) <- paste0(rep("Gene.", 200), seq(1:200))
+#' # Generate clusters
+#' clusters <- generate_clusters(df)
 #' @export
 generate_clusters <- function(df, kmin, kmax, ktot, num_iter, km_algo) {
   # Define default parameters

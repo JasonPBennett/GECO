@@ -17,6 +17,143 @@ knitr::opts_chunk$set(
 )
 ```
 
-## GECO: A metric to determine biological informational content within gene clusters
+# GECO: A metric to determine biological informational content within gene clusters
 
-Vignette text here, followed by code examples.
+The GECO metric relies on user-defined ground truth genes (co-expressed sets of genes) to generate an iterative array of k-means clusters from the users data. These clusters are evaluated by the GECO metric to determine the biological quality of the clusters and allow the user to select, based on the figure generated in the final step, a k-value for use with k-means. This 'optimal' k-value will produce the most biologically meaningful clusters from the data. Further details regarding the derivation of the metric and the motivations behind the development of this package will be available shortly in a preprint manuscript.
+
+## Clustering the dataset with *generate_clusters*
+
+**Step 0.** Prior to this step, the user should have performed any gene/sample filtering as needed to reduce the size of the dataset as much as possible. This includes performing any normalization steps (such as transformation to TPM, FPKM etc.) as well as feature scaling (Z-score normalization in the case of the sample data). Consider pruning any redundant genes falling below a certain TPM/FPKM threshold. The iterative clustering process within *generate_clusters* takes time proportional to the size of the dataset. Any attempts to reduce the size of the dataset will result in faster results.
+
+With all preprocessing complete, the dataset should be presented as a data.frame with the genes as the rows and the columns representing the samples. Also, keep in mind that the gene names (the row names of the data.frame) **must** be listed using the same naming convention as the ground truth gene sets used for scoring in subsequent steps (i.e. ENSEMBL IDs for gene labels, ENSEMBL IDs for ground truth gene sets).
+
+**Step 1.** The prepared data can now be fed into the *generate_clusters* function. The example will show the default usage of the function, but many parameters regarding the clustering process can be adjusted. See the man page (?generate_clusters) for a list of optional parameters.
+
+The *generate_clusters* function should run in less than a minute, but your own larger datasets will take longer. The sample dataset has already been TPM and Z-score normalized. It is a 5000 gene x 150 sample data.frame. The 150 samples respresent 10 individuals (5 male, 5 female) each with 15 immunce cell types. The dataset was also filtered so that it would contain only protein coding genes. More information about this dataset can be found using the *?rnaSeq* command.
+
+```{r}
+library(GECO)
+# Loading the sample dataset into the environment
+data("rnaSeq", package = "GECO")
+
+# Perform the clustering and save the results for scoring in the next step
+GECO_clusters <- generate_clusters(rnaSeq)
+```
+
+We have created our clusters, stored in a nested list structure seen below:
+
+A visual example of the output follows, assuming default parameters were used:
+* 'GECO_clusters' is a list which is the output of the generate_clusters() function
+* within 'GECO_clusters' will be another list labeled "Iteration 1 - 10": these refer to the iterations
+  + the visual example assumes the first iteration is being investigated
+* within each 'iteration' is another list containing all k-means clusters, with one entry per k-value
+  + the visual example assumes that we are looking at iteration '1' and the k-means object generated with k = 10
+
+GECO_clusters___________________________________________________________________
+|  
+| ['Iteration 1'] iterations____________________________________________________
+|                 |
+|                 | ['10'] kmeans_objects_______________________________________
+|                 |        |
+|                 |        |  kmeans(data, k=10, ...)
+|                 |        |
+
+Ultimately, the visual example shows the k-means object from the first iteration when clustering with a k-value of 10. This can be inspected using the following code. Lets look at the first 9 genes from this iteration and the clusters they were assigned to:
+
+```{r}
+head(GECO_clusters$`Iteration 1`$`10`$cluster, 9)
+# OR
+# summary(GECO_clusters[["Iteration 1"]][["10"]])
+```
+
+## Scoring the generated clusters with *score_clusters*
+
+**Step 2.** With the clusters generated, the user can now apply the GECO scoring process to determine which clustering configuration produced the most meaningful set of clusters. These scores on their own are informative, but the graph produced by the third function *assess_quality* is really where the scores will deliver the most impact.
+
+This function takes the clusters that were just generated as output from *generate_clusters()* as well as the full path to a directory containing the ground truth gene sets. The files contained within the ground truth gene set directory should be csv files formatted with only the name of the ground truth set on the first line and the gene ids (listed one per line).
+
+**NOTE: The naming convention of the genes in the original counts table MUST match the gene ids provided in the ground truth gene csv files. In the case of ENSEMBL ids, make sure the versions match also (the decimal portion of the id), and as a last resort strip version numbers to still allow matching.**
+
+To demonstrate, a small ground truth set of co-expressed genes found on the y-chromosome will be used. This ground truth set contains 9 genes, all of which are found in the sample dataset *rnaSeq* which we have used to generate our *GECO_clusters*.
+
+**NOTE: For the tutorial, we will have to create a directory and save the sample ground truth gene set within it as a csv file. The following code will do this. We have just created a directory called 'GECOData' to place the ground truth set in.**
+
+```{r}
+data("yChromSet", package = "GECO")
+
+# Adding the name of the set as the first line
+gs_genes <- c("Gender Specific Genes", yChromSet)
+
+# Create the directory and add the ground truth gene set csv to it
+dir.create(path = "./GECOData")
+write.table(gs_genes, file = "./GECOData/gs_genes.csv", row.names = FALSE,
+            col.names = FALSE)
+
+# Store the score table
+scores <- score_clusters(GECO_clusters, "./GECOData/")
+```
+
+The output of the function will again be a nested list with the following structure:
+
+The output of *score_clusters* is a list containing the scores to be used in the final step of assessing the clusters. Again, a visual representation of the output object is provided:
+* 'scores' is a list which is the output of the score_clusters() function
+* within 'scores' is another list, each nested list is labeled with the name of the ground truth gene set provided in the first line of the .csv files required by the score_clusters() function
+  + the visual example assumes that a ground truth set called 'x' was selected (a terrible label!)
+* within 'Gender Specific Genes' will be another list labeled "Iteration 1 - 10": these refer to the iterations
+  + the visual example assumes the first iteration is being investigated
+* within each 'iteration' is another list containing all kmeans scores, broken down by k-value
+  + the visual example assumes a k-value of '10' is being investigated
+
+scores_____________________________________________________________________________________________
+|  
+| ['x'] Ground_Truth_Sets__________________________________________________________________________
+|       |
+|       | ['Iteration 1'] iterations_______________________________________________________________
+|       |                 |
+|       |                 | ['10'] k_value_________________________________________________________
+|       |                 |        |
+|       |                 |        |  scores table for all genes in this clustering configuration
+|       |                 |        |
+
+Ultimate, the example shows the scores from the 'Gender Specific Genes' ground truth gene set within the first iteration given a k-value of 10. This can be inspected using the following code (without the *head* wrapper):
+
+```{r}
+head(scores$`Gender Specific Genes`$`Iteration 1`$`10`)
+```
+
+The 'clust_num' column shows which cluster the gene originated from. The 'gene_name' shows the name of the gene as determined by the row names provided in the original dataset that was clustered.The 'pos_vec' column contains a boolean indicating if the gene in question is from one of the ground truth sets. The gene is then assigned a predicted value in the 'prob_vec' column based on the other genes in the cluster. Details about the scoring methods will be found in the preprint manuscript.
+
+## Assessing the quality of our clusters with *assess_quality*
+
+**Step 3.** With the scores table generated, the final step is to call the *assess_quality* function which will visualize all the scores and allow the user to identify an optimal range for k-values and make a determination about the clustering parameters that will generate the highest quality clusters. This is done using the aforementioned predicted values for the genes, the boolean assignment for the genes, and the application of ROC plots and their associated AUC values.
+
+The figure will indicate a range of viable cluster quality scores seen in the form of a plateau in the figure. It is **not** expected that a single k-value will be "best". Investigation into the first few k-values at the height of the plateau is highly encouraged. In general, lower numbers of clusters are preferred, as further analysis steps (like gene set enrichment) will be easier as the number of clusters decreases.
+
+```{r}
+fig <- assess_quality(scores)
+plot(fig)
+```
+
+## Interpreting the figure
+
+The figure shows:
+* The potential range of GECO metric cluster quality scores on the y-axis (0.0 - 1.0)
+* The k-value (number of clusters) used to generate the clusters on the x-axis
+# The box and whiskers contain the different clustering iterations using that same k-value with the median shown as the bar within the box
+
+For example, looking at the '32' column on the graph, we see the 10 different clustering iterations that were made using a k-value of 32. Ten iterations is the default set by *generate_clusters*, but again, this can be increased or decreased as desired. For additional information about that, see the man page for *generate_clusters*: *?generate_clusters*
+
+This figure would indicate that a plateau starts around k = 22, so any k-value of 22 or greater could be taken to generate high quality clusters for our given dataset.
+
+**NOTE: If a plateau in scores is not observed, consider increasing the 'kmax' parameter and re-running the generate_clusters() function with this larger 'kmax' value.**
+
+Because we only used a single ground truth set, and the set was looking at how well we could partition biological males from females (y-chromosome gene expression), it is possible that the optimal k-value could vary. This is the strength of the metric; depending on what the user wants to investigate and what ground truth gene sets are chosen, the metric will direct how best to cluster the genes.
+
+Regararding our example, to investigate how well the ground truth genes have been identified and clustered when using a k-value of 22, we can quickly look back at our original clusters.
+
+```{r}
+# The first 9 genes of the sample dataset are our 9 gender specific genes
+table(GECO_clusters$`Iteration 1`$`22`$cluster[1:9])
+```
+
+As we can see, most of the gender specific genes have been put into a single cluster, which is what we would expect given the fact that they are co-expressed. It looks like 22 was a good choice after all!
