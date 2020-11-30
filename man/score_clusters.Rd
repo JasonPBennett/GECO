@@ -25,7 +25,7 @@ clusters <- list()
 # This replicates the structure of the clusters returned by 'generate_clusters'
 df <- data.frame(replicate(10,sample(-1:10,200,rep=TRUE)))
 rownames(df) <- paste0(rep("Gene.", 200), seq(1:200))
-clusters$`Iteration 1`$`10` <- kmeans
+clusters$`Iteration 1`$`10` <- kmeans(df, centers = 10)
 # This replicates a ground truth set and stores it in a directory
 gt_set <- c("Ground Truth Set X", "Gene.1", "Gene.10", "Gene.50")
 dir.create("./GECOdata")

@@ -29,7 +29,7 @@ With all preprocessing complete, the dataset should be presented as a data.frame
 
 **Step 1.** The prepared data can now be fed into the *generate_clusters* function. The example will show the default usage of the function, but many parameters regarding the clustering process can be adjusted. See the man page (?generate_clusters) for a list of optional parameters.
 
-The *generate_clusters* function should run in less than a minute, but your own larger datasets will take longer. The sample dataset has already been TPM and Z-score normalized. It is a 5000 gene x 150 sample data.frame. The 150 samples respresent 10 individuals (5 male, 5 female) each with 15 immunce cell types. The dataset was also filtered so that it would contain only protein coding genes. More information about this dataset can be found using the *?rnaSeq* command.
+The *generate_clusters* function should run in less than a minute, but your own larger datasets will take longer. The sample dataset has already been TPM and Z-score normalized. It is a 4000 gene x 120 sample data.frame. The 120 samples respresent 8 individuals (4 male, 4 female) each with 15 immunce cell types. The dataset was also filtered so that it would contain only protein coding genes. More information about this dataset can be found using the *?rnaSeq* command.
 
 ```{r}
 library(GECO)

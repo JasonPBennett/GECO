@@ -3,7 +3,7 @@
 \docType{data}
 \name{rnaSeq}
 \alias{rnaSeq}
-\title{A sample RNA-seq dataset containing 5,000 genes and 10 individuals (5M, 5F),
+\title{A sample RNA-seq dataset containing 4,000 genes and 8 individuals (4M, 4F),
 each with 15 immune-specific cell types present.}
 \format{
 A data frame with columns:
@@ -68,21 +68,6 @@ A data frame with columns:
 \item{Male4_CD4_STIM}{Expression levels from stimulated CD4 T cells.}
 \item{Male4_M2}{Expression levels from Non-classical Monocytes.}
 \item{Male4_NK}{Expression levels from Natural Killer cells.}
-\item{Male5_MONOCYTES}{Expression levels from Classical Monocytes.}
-\item{Male5_B_CELL_NAIVE}{Expression levels from naive B cells.}
-\item{Male5_CD8_NAIVE}{Expression levels from naive CD8 T cells}
-\item{Male5_CD8_STIM}{Expression levels from stimulated CD8 T cells.}
-\item{Male5_TH2}{Expression levels from Th2 T cells.}
-\item{Male5_THSTAR}{Expression levels from Th1/17 T cells.}
-\item{Male5_TH17}{Expression levels from Th17 T cells.}
-\item{Male5_TH1}{Expression levels from Th1 T cells.}
-\item{Male5_TFH}{Expression levels from T follicular helper T cells.}
-\item{Male5_TREG_NAIVE}{Expression levels from naive regulatory T cells.}
-\item{Male5_TREG_MEM}{Expression levels from memory regulatory T cells.}
-\item{Male5_CD4_NAIVE}{Expression levels from naive CD4 T cells.}
-\item{Male5_CD4_STIM}{Expression levels from stimulated CD4 T cells.}
-\item{Male5_M2}{Expression levels from Non-classical Monocytes.}
-\item{Male5_NK}{Expression levels from Natural Killer cells.}
 \item{Female1_MONOCYTES}{Expression levels from Classical Monocytes.}
 \item{Female1_B_CELL_NAIVE}{Expression levels from naive B cells.}
 \item{Female1_CD8_NAIVE}{Expression levels from naive CD8 T cells}
@@ -143,21 +128,6 @@ A data frame with columns:
 \item{Female4_CD4_STIM}{Expression levels from stimulated CD4 T cells.}
 \item{Female4_M2}{Expression levels from Non-classical Monocytes.}
 \item{Female4_NK}{Expression levels from Natural Killer cells.}
-\item{Female5_MONOCYTES}{Expression levels from Classical Monocytes.}
-\item{Female5_B_CELL_NAIVE}{Expression levels from naive B cells.}
-\item{Female5_CD8_NAIVE}{Expression levels from naive CD8 T cells}
-\item{Female5_CD8_STIM}{Expression levels from stimulated CD8 T cells.}
-\item{Female5_TH2}{Expression levels from Th2 T cells.}
-\item{Female5_THSTAR}{Expression levels from Th1/17 T cells.}
-\item{Female5_TH17}{Expression levels from Th17 T cells.}
-\item{Female5_TH1}{Expression levels from Th1 T cells.}
-\item{Female5_TFH}{Expression levels from T follicular helper T cells.}
-\item{Female5_TREG_NAIVE}{Expression levels from naive regulatory T cells.}
-\item{Female5_TREG_MEM}{Expression levels from memory regulatory T cells.}
-\item{Female5_CD4_NAIVE}{Expression levels from naive CD4 T cells.}
-\item{Female5_CD4_STIM}{Expression levels from stimulated CD4 T cells.}
-\item{Female5_M2}{Expression levels from Non-classical Monocytes.}
-\item{Female5_NK}{Expression levels from Natural Killer cells.}
 }
 }
 \source{
@@ -168,7 +138,7 @@ Expression, and Epigenomics. \url{https://dice-database.org/}
 rnaSeq
 }
 \description{
-A sample RNA-seq dataset containing 5,000 genes and 10 individuals (5M, 5F),
+A sample RNA-seq dataset containing 4,000 genes and 8 individuals (4M, 4F),
 each with 15 immune-specific cell types present.
 }
 \keyword{datasets}
