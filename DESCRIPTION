@@ -1,6 +1,6 @@
 Package: GECO
 Title: A metric to determine the biological quality of gene clusters
-Version: 0.1.4
+Version: 0.1.5
 Authors@R: 
     person(given = "Jason",
            family = "Bennett",

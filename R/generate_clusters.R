@@ -49,7 +49,7 @@ generate_clusters <- function(df, kmin, kmax, ktot, num_iter, km_algo) {
   km_clusters <- vector(mode = "list", num_iter)
 
   # Run kmeans repeatedly
-  for(i in 1:num_iter) {
+  for(i in seq_len(num_iter)) {
     # Create list to hold the different k-value clusterings per iteration
     k_clusts <- vector(mode = "list", length(k_vec))
 
@@ -75,7 +75,7 @@ generate_clusters <- function(df, kmin, kmax, ktot, num_iter, km_algo) {
     # Store the kmeans iterations
     km_clusters[[i]] <- k_clusts
   }
-  names(km_clusters) <- paste0("Iteration ", c(1:num_iter), sep = "")
+  names(km_clusters) <- paste0("Iteration ", c(seq_len(num_iter)), sep = "")
 
   return(km_clusters)
 }

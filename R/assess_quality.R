@@ -16,12 +16,12 @@ find_AUC <- function(scores) {
     gt_cnt <- gt_cnt + 1
     all_AUC_values <- c()
     # Gather the gt AUC values
-    for(itr in 1:num_iter) {
+    for(itr in seq_len(num_iter)) {
       all_AUC_values <- cbind(all_AUC_values,
-        sapply(k_vec, function(k) {
+        vapply(k_vec, function(k) {
         pred <- ROCR::prediction(scores[[gt_set]][[itr]][[k]]$prob_vec,
                            scores[[gt_set]][[itr]][[k]]$pos_vec)
-        return(ROCR::performance(pred, "auc")@y.values[[1]])}))
+        return(ROCR::performance(pred, "auc")@y.values[[1]])}, numeric(1)))
     }
     AUC_tbl[[gt_cnt]] <- all_AUC_values
   }
@@ -29,7 +29,7 @@ find_AUC <- function(scores) {
 
   ggp_tbl <- data.frame()
   k_vec <- as.factor(as.numeric(k_vec))
-  for(l in 1:length(AUC_tbl)) {
+  for(l in seq_len(length(AUC_tbl))) {
     tmp_tbl <- data.frame(rep(k_vec, num_iter),
                           rep(gt_sets[[l]], length(k_vec)*num_iter),
                           as.vector(AUC_tbl[[l]]))
@@ -80,7 +80,7 @@ assess_quality <- function(GECO_scores) {
   k <- AUC_Value <- Target_Property <- NULL
 
   gridlines <- c(rep(0,length(k_vec)))
-  for(i in 1:(length(k_vec)-1)) {
+  for(i in seq_len((length(k_vec)-1))) {
     x_1 <- k_vec[i]
     x_2 <- k_vec[i+1]
     gridlines[i+1] <- mean(c(x_1, x_2))

@@ -34,8 +34,9 @@ get_GT_genes <- function(GT_dir) {
 #' df <- data.frame(replicate(10,sample(-1:10,200,rep=TRUE)))
 #' rownames(df) <- paste0(rep("Gene.", 200), seq(1:200))
 #' clusters$`Iteration 1`$`10` <- kmeans(df, centers = 10)
-#' # This replicates a ground truth set and stores it in a directory
+#' # This replicates a ground truth set
 #' gt_set <- c("Ground Truth Set X", "Gene.1", "Gene.10", "Gene.50")
+#' # Store the Ground Truth set in its own directory
 #' dir.create("./GECOdata")
 #' write.table(gt_set, file = "./GECOData/gs_genes.csv", row.names = FALSE, col.names = FALSE)
 #' # Score the clusters using the ground truth sets found in /GECOdata
@@ -47,7 +48,7 @@ score_clusters <- function(km_clusters, GT_dir) {
 
   # Ensure that the ground truth genes can be found within the dataset
   all_genes <- names(km_clusters[[1]][[1]]$cluster)
-  for(i in 1:length(gt_sets)) {
+  for(i in seq_len(length(gt_sets))) {
     if(sum(gt_sets[[i]] %in% all_genes) <= 0) {
       stop(paste0("No genes from the ground truth set '", names(gt_sets[i]), "' can be found in the data!"))
     }
@@ -65,7 +66,7 @@ score_clusters <- function(km_clusters, GT_dir) {
     num_iter <- length(km_clusters)
 
     # Work through the iterations: 1 - num_iter
-    for(itr in 1:num_iter) {
+    for(itr in seq_len(num_iter)) {
       clust_itr <- km_clusters[[itr]]
       k_vec <- names(clust_itr)
 
@@ -78,7 +79,7 @@ score_clusters <- function(km_clusters, GT_dir) {
         pos_vec <- vector(mode = "list", as.numeric(k))
         prob_vec <- vector(mode = "list", as.numeric(k))
         # Check each cluster for GT genes
-        for(i in 1:k) {
+        for(i in seq_len(k)) {
           gene_name[[i]] <- names(which(clust$cluster == i))
           # If cluster is not a singlet
           if(clust$size[i]>1) {
@@ -106,7 +107,7 @@ score_clusters <- function(km_clusters, GT_dir) {
       names(gt_ROC) <- k_vec
       gt_ROC_list[[itr]] <- gt_ROC
     }
-    names(gt_ROC_list) <- paste0("Iteration ", c(1:num_iter), sep = "")
+    names(gt_ROC_list) <- paste0("Iteration ", c(seq_len(num_iter)), sep = "")
     scores[[gt_cnt]] <- gt_ROC_list
   }
   names(scores) <- names(gt_sets)
