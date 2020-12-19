@@ -1,6 +1,11 @@
 \name{NEWS}
 \title{News for Package \pkg{GECO}}
 
+\section{Changes in version 0.1.6}{
+\itemize{
+    \item Vignette updates.
+}}
+
 \section{Changes in version 0.1.5}{
 \itemize{
     \item Reduced supplied dataset size and provided full vignette.

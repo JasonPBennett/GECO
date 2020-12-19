@@ -38,7 +38,9 @@ score_clusters(clusters).
 \description{
 This function takes the normalized data (TPM/FPKM & feature scaled) and uses
 the k-means function to generate an iterative series of clusters to identify
-a potentially optimal number of clusters for the dataset.
+a potentially optimal number of clusters for the dataset. For reproducible
+clusters, it is highly recommended that a seed value is used prior to
+generating the clusters using the set.seed function.
 }
 \examples{
 # Create a pseudo RNA-seq counts table

@@ -2,7 +2,9 @@
 #'
 #' This function takes the normalized data (TPM/FPKM & feature scaled) and uses
 #' the k-means function to generate an iterative series of clusters to identify
-#' a potentially optimal number of clusters for the dataset.
+#' a potentially optimal number of clusters for the dataset. For reproducible
+#' clusters, it is highly recommended that a seed value is used prior to
+#' generating the clusters using the set.seed function.
 #'
 #' @param df A dataframe containing the normalized reads
 #' @param kmin An integer indicating the minimum number of clusters to generate.
@@ -50,11 +52,10 @@ generate_clusters <- function(df, kmin, kmax, ktot, num_iter, km_algo) {
 
   # Run kmeans repeatedly
   for(i in seq_len(num_iter)) {
-    # Create list to hold the different k-value clusterings per iteration
+    # Create list to hold the different k-value cluster iterations
     k_clusts <- vector(mode = "list", length(k_vec))
 
     for(k in k_vec) {
-      # Run k-means for each k value
       clust <- stats::kmeans(df, k, iter.max = 30, algorithm = km_algo)
 
       # Make sure that the algorithm reached convergence
