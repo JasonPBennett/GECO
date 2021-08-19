@@ -1,6 +1,12 @@
 \name{NEWS}
 \title{News for Package \pkg{GECO}}
 
+\section{Changes in version 0.1.7}{
+\itemize{
+    \item Implemented a new function: GECO_score. This provides a simple scoring
+    function for a users pre-defined clusters.
+}}
+
 \section{Changes in version 0.1.6}{
 \itemize{
     \item Vignette updates.
