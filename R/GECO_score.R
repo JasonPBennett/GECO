@@ -58,7 +58,7 @@ GECO_score <- function(clusters, gt_dir) {
     prob_vec <- unlist(prob_vec)
 
     # Get the AUC value based on the GECO metric scores
-    pred <- ROCR::prediction(score_tbl$prob_vec, score_tbl$pos_vec)
+    pred <- ROCR::prediction(prob_vec, pos_vec)
     GECO_score <- ROCR::performance(pred, "auc")@y.values[[1]]
 
     # Store the GECO scores for each ground truth set
