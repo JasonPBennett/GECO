@@ -1,8 +1,6 @@
 # GECO
 GECO: A metric to assess the biological significance of gene clusters
 
-This is still a WIP and primarily intended for in-house testing at the moment.
-
 The goal of this tool is generate sets of gene clusters that can be evauluated using the GECO metric to determine the highest quality clusters. The level of quality is determined by the distribution of known co-expressed gene sets, with the assumption that genes that are co-expressed should be clustered together if our clustering parameters were correct. The GECO package takes a dataset in the form of a normalized counts table and generates a series of clusters. These clusters are created using the k-means algorithm with wide-ranging k-values (or numbers of clusters). Each permutation is then scored using the GECO metric and ultimately given cluster quality scores with the goal of identifying a certain k-value, or a certain optimal number of clusters, that best captures the delicate biological signals found within the dataset. Following the use of the package, an optimal set of clusters can be generated based on the optimal k-value indicated by the package.
 
 
